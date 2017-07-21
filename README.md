@@ -1,6 +1,6 @@
 # AdaScan 
 
-This repository contains the source code for the paper [Adascan: Adaptive Scan Pooling in Deep Convolutional Neural Networks for Human Action Recognition in Videos](https://arxiv.org/abs/1611.08240) with support for multi-GPU training and testing. We also provide pre-trained models for video classfication.
+This repository contains the source code for the paper [Adascan: Adaptive Scan Pooling in Deep Convolutional Neural Networks for Human Action Recognition in Videos](https://arxiv.org/abs/1611.08240), Amlan Kar\*(IIT Kanpur), Nishant Rai\*(IIT Kanpur), Karan Sikka(UCSD and SRI), Gaurav Sharma(IIT Kanpur) with support for multi-GPU training and testing.
 
 ## Dependencies
 * [Tensorflow](https://tensorflow.org) (this repository uses version 0.11)
@@ -26,14 +26,14 @@ This repository contains the source code for the paper [Adascan: Adaptive Scan P
 
 ## Visualizing on custom video (only for RGB)
 ```
-python demo.py -ckpt_file path/to/ckpt/file -vid_file path/to/vid_file
+python demo.py -ckpt_file path/to/ckpt/file -vid_file vis/vid_file
 ```
-This should save a png in vis/ that looks like:
+This should save an image in vis/ that looks like:
 
 ![Sample visualization](vis/Basketball_g06_c01.jpg)
 
 ## Pre-trained models (Coming Soon)
-These models have been trained on UCF-101
+These models have been trained on UCF-101. We will be releasing the updated models soon.
 
 ### RGB
 * [Split 1]()
@@ -68,5 +68,6 @@ Amlan Kar\*, Nishant Rai\*, Karan Sikka, Gaurav Sharma (\*denotes equal contribu
     @article{kar2016adascan,
     title={AdaScan: Adaptive Scan Pooling in Deep Convolutional Neural Networks for Human Action Recognition in Videos},
     author={Kar, Amlan and Rai, Nishant and Sikka, Karan and Sharma, Gaurav},
-    journal={arXiv preprint arXiv:1611.08240},
-    year={2016}}  
+    booktitle={CVPR}, 
+    year={2017} 
+    }  
