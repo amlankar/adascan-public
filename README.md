@@ -1,6 +1,6 @@
 # AdaScan 
 
-This repository contains the source code for the paper [Adascan: Adaptive Scan Pooling in Deep Convolutional Neural Networks for Human Action Recognition in Videos](https://arxiv.org/abs/1611.08240), Amlan Kar\*(IIT Kanpur), Nishant Rai\*(IIT Kanpur), Karan Sikka(UCSD and SRI), Gaurav Sharma(IIT Kanpur) with support for multi-GPU training and testing.
+This repository contains the source code for the paper [Adascan: Adaptive Scan Pooling in Deep Convolutional Neural Networks for Human Action Recognition in Videos](https://arxiv.org/abs/1611.08240), [Amlan Kar](http://amlankar.github.io)\* (IIT Kanpur), [Nishant Rai](http://nishantrai18.github.io)\* (IIT Kanpur), [Karan Sikka](http://ksikka.com) (UCSD and SRI), [Gaurav Sharma](http://grvsharma.com) (IIT Kanpur), with support for multi-GPU training and testing.
 
 ## Dependencies
 * [Tensorflow](https://tensorflow.org) (this repository uses version 0.11)

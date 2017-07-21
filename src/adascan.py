@@ -198,7 +198,6 @@ def model(model_options,model_vars):
             imp_val_softmax = tf.nn.softmax(imp_val)
             gpu_vars['imp_val_softmax'] = imp_val_softmax
             # imp_val is now of shape [batch_size,num_recurrent_steps]
-            # mask_norms = tf.div(mask_norms,tf.reshape(tf.reduce_sum(mask_norms,1),shape=[-1,1]))
 
             states = tf.reverse(states,[True,False,False])[0,:,:]
             # Get the last element (tf doesn't support negative indexing)
@@ -224,11 +223,8 @@ def model(model_options,model_vars):
                                                                        name='cross_entropy'))
 
                 gpu_vars['ce_adascan'] = ce_adascan
-                #mask_norms = tf.mul(mask_norms,100)
                 imp_reg = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(imp_val,
                                                                              imp_val_softmax))
-                # softmax_cross_entropy_with_logits calculates softmax on mask_norms,
-                # it expects unscaled logits
 
                 total_loss_adascan = ce_adascan + model_options['reg_strength']*imp_reg
                 gpu_vars['total_loss_adascan'] = total_loss_adascan
@@ -367,7 +363,7 @@ def argparser():
     parser = argparse.ArgumentParser()
     parser.add_argument('-name', type=str, default='test')
     parser.add_argument('-mode', type=str, default='train')
-    # 'train' or 'test'
+    # 'train' or 'test' or 'save'
     parser.add_argument('-gpus', type=str, default='/gpu:0')
     # Comma separate string with gpu names to be used
     parser.add_argument('-hmdb', type=bool, default=False)
@@ -388,7 +384,7 @@ def argparser():
     # data_list should be a file in split_dir with file names
     # for example trainlist01.txt provided with UCF101
     parser.add_argument('-data_dir', type=str, default=None)
-    # This should contain the .npy files
+    # This should contain the .npz files
     parser.add_argument('-keep_prob', type=float, default=0.2)
     parser.add_argument('-vgg_keep_prob', type=float, default=0.8)
     parser.add_argument('-flip', type=bool, default=True)
@@ -467,11 +463,11 @@ if __name__=='__main__':
             model_options['start_from']=0 
             ######## UNCOMMENT AND CHANGE WHILE RESUMING ##############
             '''
-            minibatch_idx=0
-            epoch_idx=3
-            step=14413
+            minibatch_idx= FILL_HERE
+            epoch_idx= FILL_HERE
+            step= FILL_HERE
             # add saver.restore here
-            ckpt_file = 'checkpoints/flow_Split3NewDataAndDropout/flow_Split3NewDataAndDropoutepoch3_minibatch14413.model'
+            ckpt_file = 'path/to/ckpt/file'
             print 'Resuming from: ',ckpt_file
             saver.restore(sess,ckpt_file)
             model_options['start_from']=minibatch_idx*model_options['batch_size']*model_options['n_gpus']
@@ -517,11 +513,6 @@ if __name__=='__main__':
                         saver.save(sess,save_name+\
                         'epoch'+str(epoch_idx)+\
                         '_minibatch'+str(step)+'.model')
-                        os.remove(save_name+\
-                        'epoch'+str(epoch_idx)+\
-                        '_minibatch'+\
-                        str(step)+\
-                        '.model.meta')
-                        # To save meta file only once
+
                 # Reset minibatch_idx       
                 minibatch_idx = -1

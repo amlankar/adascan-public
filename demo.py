@@ -44,40 +44,39 @@ def gen_vis(masks,frames,file_name):
     print 'Saved to', save_name
 
 def get_mask(model_options):
+    def _center_crop(frames):
+                    y,x = frames.shape[1:3]
+                    assert y >= 224 and x >= 224, 'Video too small!'
+
+                    if y <= 430 and x <= 430: 
+                        # central crop     
+                        y_d = (y-224)//2
+                        x_d = (x-224)//2
+                        frames = frames[:,y_d:y_d+224,x_d:x_d+224,:]
+
+                    return frames
+
     with tf.Session() as sess:
-	with tf.device('/cpu:0'):
+        with tf.device('/cpu:0'):
             masks,images = model(model_options,sess)
             print 'Reading Video..'
             frames = vread(model_options['vid_file'])
             print 'Video File: ',model_options['vid_file'], 'has shape ',frames.shape
-	    #from skvideo.io import write
-            #write('sample_hammer.mp4',frames)            
             length = frames.shape[0]
 
-            def _center_crop(frames):
-                y,x = frames.shape[1:3]
-                assert y >= 224 and x >= 224, 'Video too small!'
-
-                if y <= 430 and x <= 430: 
-                    # central crop     
-                    y_d = (y-224)//2
-                    x_d = (x-224)//2
-                    frames = frames[:,y_d:y_d+224,x_d:x_d+224,:]
-
-                return frames
-
             frames = _center_crop(frames)
-	    frames = np.stack([frames[int(math.ceil(i*length/17)),:,:,:] for i in range(17)],0)
+            frames = np.stack([frames[int(math.ceil(i*length/17)),:,:,:] for i in range(17)],0)
 
             if frames.shape[1] != 224:
                 print 'Big sized video, resizing'
                 # make the larger side close to 420
                 f = max(frames.shape[1:3])/420
-		sh = (np.array(frames.shape[1:3])/f).astype(np.int32)
+                sh = (np.array(frames.shape[1:3])/f).astype(np.int32)
                 for i in range(frames.shape[0]):
                     frames[i] = (resize(frames[i],sh)*255).astype(np.uint8)
 
-            frames = _center_crop(frames)
+                frames = _center_crop(frames)
+            
             print 'New shape: ',frames.shape
             assert frames.shape[1:3] == (224,224), 'Bad aspect ratio!'           
             feed_dict = {}
@@ -85,7 +84,7 @@ def get_mask(model_options):
             print 'Getting Mask...'
             mask = sess.run(masks,feed_dict=feed_dict)
             mask = mask[0]
-    
+        
     gen_vis(mask,frames,model_options['vid_file'])
 
 if __name__=='__main__':
