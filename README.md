@@ -16,7 +16,8 @@ This repository contains the source code for the paper [Adascan: Adaptive Scan P
 * Run preprocessing script to create npz files required for training/testing (directory created to be passed using -data_dir)
 
 ### Training from scratch
-* Download VGG numpy files from [here]() (to be passed using -vgg_npy_path) (there are three files for flow because we use pre-trained models from [here](https://github.com/yjxiong/caffe/tree/action_recog/models/action_recognition) to initialize our flow models)
+* [RGB training] Download VGG numpy files from [here](https://mega.nz/#!YU1FWJrA!O1ywiCS2IiOlUCtCpI6HTJOMrneN-Qdv3ywQP5poecM) (to be passed using -vgg_npy_path)
+* [Optical Flow training] Download the pre-trained caffe models for flow from [here](https://github.com/yjxiong/caffe/tree/action_recog/models/action_recognition) and convert them using [this](https://github.com/ethereon/caffe-tensorflow) tool to numpy files
 * Edit sample_train.sh and run
 
 ### Testing pre-trained models or self-trained models
